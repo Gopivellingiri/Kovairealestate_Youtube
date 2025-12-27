@@ -1,12 +1,13 @@
 import React from "react";
 import Header from "./shared/Header";
-import { HomePage } from "./routes/PublicRoutes";
+import { BrowserRouter } from "react-router-dom";
+import PublicRoutes from "./routes/PublicRoutes";
 
 const App = () => {
   return (
-    <div>
-      <HomePage />
-    </div>
+    <BrowserRouter>
+      <PublicRoutes />
+    </BrowserRouter>
   );
 };
 

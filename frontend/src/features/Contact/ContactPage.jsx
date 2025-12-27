@@ -1,14 +1,13 @@
 import React from "react";
-import Hero from "./Hero";
 import Header from "../../shared/Header";
 
-const HomePage = () => {
+const ContactPage = () => {
   return (
     <div>
       <Header />
-      <Hero />
+      ContactPage
     </div>
   );
 };
 
-export default HomePage;
+export default ContactPage;

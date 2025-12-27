@@ -1,14 +1,13 @@
 import React from "react";
-import Hero from "./Hero";
 import Header from "../../shared/Header";
 
-const HomePage = () => {
+const AgentPage = () => {
   return (
     <div>
       <Header />
-      <Hero />
+      AgentPage
     </div>
   );
 };
 
-export default HomePage;
+export default AgentPage;
