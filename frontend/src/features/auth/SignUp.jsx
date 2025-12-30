@@ -3,8 +3,9 @@ import HeroImg from "../../assets/heroimg.png";
 import Layout from "../../shared/Layout";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   return (
     <Layout>
@@ -12,9 +13,18 @@ const Login = () => {
         <div>
           <div>
             <h1 className="text-3xl font-bold text-sky-800 mb-4">
-              Login to your account
+              Register your Account
             </h1>
             <form className="flex flex-col items-center text-left">
+              <input
+                type="text"
+                className="mt-6 bg-white border border-[#D0dadd] outline-none py-3 px-3 w-full rounded-md"
+                placeholder="Enter Your Name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+
               <input
                 type="text"
                 className="mt-6 bg-white border border-[#D0dadd] outline-none py-3 px-3 w-full rounded-md"
@@ -31,19 +41,12 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <div className="mt-2 ml-auto">
-                <Link to="/forgot-password">
-                  <span className="font-semibold text-sky-800">
-                    Forgot password?
-                  </span>
-                </Link>
-              </div>
               <div className="w-full">
                 <button
                   type="submit"
                   className="font-semibold text-md text-white rounded-full space-y-0 bg-orange-500 py-3 px-6 hover:bg-orange-600 transition-all duration-300 w-full mt-3"
                 >
-                  Sign In
+                  Sign Up
                 </button>
               </div>
               <div className="w-full mt-3">
@@ -60,10 +63,10 @@ const Login = () => {
                   </button>
                 </div>
                 <p className="text-base font-semibold text-sky-800 mt-3 text-center">
-                  Don't you have an account?
-                  <Link to="/register">
+                  Have an account already?
+                  <Link to="/login">
                     <span className="text-orange-500 hover:underline pl-1">
-                      Sing Up
+                      Sing In
                     </span>
                   </Link>
                 </p>
@@ -80,4 +83,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
