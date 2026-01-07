@@ -8,19 +8,17 @@ import ListingPage from "../features/Listing/ListingPage";
 import LoginPage from "../features/auth/LoginPage";
 import SignupPage from "../features/auth/SignupPage";
 
-const PublicRoutes = () => {
-  return (
-    <Routes>
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/about" element={<AboutUsPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/agent" element={<AgentPage />} />
-      <Route path="/listing" element={<ListingPage />} />
-      //auth page
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<SignupPage />} />
-    </Routes>
-  );
-};
+const PublicRoutes = (
+  <Routes>
+    <Route path="/home" element={<HomePage />} />
+    <Route path="/about" element={<AboutUsPage />} />
+    <Route path="/contact" element={<ContactPage />} />
+    <Route path="/agent" element={<AgentPage />} />
+    <Route path="/listing" element={<ListingPage />} />
+    //auth page
+    <Route path="/login" element={<LoginPage />} />
+    <Route path="/register" element={<SignupPage />} />
+  </Routes>
+);
 
 export default PublicRoutes;
