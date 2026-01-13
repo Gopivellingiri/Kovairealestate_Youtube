@@ -1,6 +1,6 @@
 import { parseExpireTime } from "./parseExpireTime.js";
 
-export const sendToken = (user, statusCode, res) => {
+export const sendToken = (user, statusCode, res, message = "successfull") => {
   const token = user.getJwtToken();
   const { password, resetPasswordToken, resetPasswordTime, ...userInfo } =
     user._doc || user;
@@ -15,7 +15,7 @@ export const sendToken = (user, statusCode, res) => {
   };
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
-    message: "Login successful",
+    message,
     token,
     user: userInfo,
   });

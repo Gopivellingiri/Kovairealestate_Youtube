@@ -17,12 +17,12 @@ export default (err, req, res, next) => {
 
   if (err.name === "JsonWebTokenError") {
     const message = "Invalid token. Please try again.";
-    err = new ErrorHandler(message, 400);
+    err = new ErrorHandler(message, 401);
   }
 
   if (err.name === "TokenExpiredError") {
     const message = `Token expired. Please try again`;
-    err = new ErrorHandler(message, 400);
+    err = new ErrorHandler(message, 401);
   }
   res.status(err.statusCode).json({
     success: false,

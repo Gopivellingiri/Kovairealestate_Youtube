@@ -1,12 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeroImg from "../../assets/heroimg.png";
 import Layout from "../../shared/Layout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useRegisterUserMutation } from "../../redux/api/userApi";
+import { setCredentials } from "../../redux/slices/authSlice";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+
+  const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const userData = { name, email, password };
+
+    try {
+      const res = await registerUser(userData).unwrap();
+      const { user, token } = res;
+
+      if (res.success) {
+        dispatch(setCredentials({ user, token }));
+        console.log(res.message);
+        setName("");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (err) {
+      console.log(err?.data?.message || "Registration failed");
+    }
+  };
+
+  //redirect the user to the login page
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/listing");
+    }
+  }, [userInfo, navigate]);
+
   return (
     <Layout>
       <div className="flex items-start lg:items-center justify-center lg:flex-row xl:flex-row gap-4">
@@ -15,7 +53,10 @@ const Signup = () => {
             <h1 className="text-3xl font-bold text-sky-800 mb-4">
               Register your Account
             </h1>
-            <form className="flex flex-col items-center text-left">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col items-center text-left"
+            >
               <input
                 type="text"
                 className="mt-6 bg-white border border-[#D0dadd] outline-none py-3 px-3 w-full rounded-md"
@@ -46,7 +87,7 @@ const Signup = () => {
                   type="submit"
                   className="font-semibold text-md text-white rounded-full space-y-0 bg-orange-500 py-3 px-6 hover:bg-orange-600 transition-all duration-300 w-full mt-3"
                 >
-                  Sign Up
+                  {isLoading ? "Sing Up..." : "Sign Up"}
                 </button>
               </div>
               <div className="w-full mt-3">
