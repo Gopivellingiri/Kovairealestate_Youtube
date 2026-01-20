@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useRegisterUserMutation } from "../../redux/api/userApi";
 import { setCredentials } from "../../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -27,13 +28,17 @@ const Signup = () => {
 
       if (res.success) {
         dispatch(setCredentials({ user, token }));
-        console.log(res.message);
+        toast.success(res.message);
         setName("");
         setEmail("");
         setPassword("");
+        setTimeout(() => {
+          localStorage.setItem("isIntOtpFlow", "true");
+          navigate(`/verify-otp?email=${encodeURIComponent(email)}`);
+        }, 2000);
       }
     } catch (err) {
-      console.log(err?.data?.message || "Registration failed");
+      toast.error(err?.data?.message || "Registration failed");
     }
   };
 

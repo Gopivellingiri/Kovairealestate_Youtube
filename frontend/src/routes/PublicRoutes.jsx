@@ -7,6 +7,7 @@ import AgentPage from "../features/Agents/AgentPage";
 import ListingPage from "../features/Listing/ListingPage";
 import LoginPage from "../features/auth/LoginPage";
 import SignupPage from "../features/auth/SignupPage";
+import VerifyOTP from "../features/auth/VerifyOTP";
 
 const PublicRoutes = (
   <Routes>
@@ -18,6 +19,7 @@ const PublicRoutes = (
     //auth page
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<SignupPage />} />
+    <Route path="/verify-otp" element={<VerifyOTP />} />
   </Routes>
 );
 
