@@ -5,7 +5,10 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 import Layout from "../../shared/Layout";
 import OtpPhoneAnimation from "../../common/OtpPhoneAnimation.jsx";
 import { toast } from "react-toastify";
-import { useVerifyOtpMutation } from "../../redux/api/userApi.js";
+import {
+  useResendOtpMutation,
+  useVerifyOtpMutation,
+} from "../../redux/api/userApi.js";
 
 const VerifyOTP = () => {
   const location = useLocation();
@@ -50,15 +53,32 @@ const VerifyOTP = () => {
     }
     try {
       const res = await verifyOtp({ email, otp }).unwrap();
-      if (res.success) {
-        toast.success(res.message || "Your account has been created");
-        localStorage.removeItem("isInOtpFlow");
-        navigate("/login");
-      }
+      toast.success(res.message || "Your account has been created");
+      localStorage.removeItem("isInOtpFlow");
+      navigate("/login");
     } catch (err) {
       if (err?.status === 429) {
         toast.error(err?.data?.message || "Invalid or expired OTP");
       }
+    }
+  };
+
+  /* ------------------------------ //RESEND OTP ------------------------------ */
+
+  const [resendOtp, { isLoading: isResending }] = useResendOtpMutation();
+  const [isResendDisabled, setIsResendDisabled] = useState(false);
+
+  const handleResendOtp = async () => {
+    try {
+      setIsResendDisabled(true);
+      const res = await resendOtp({ email }).unwrap();
+      toast.success(res.message || "A new OTP has been sent to your email");
+
+      setTimeLeft(10 * 60);
+      setTimeout(() => setIsResendDisabled(false), 6000);
+    } catch (err) {
+      toast.error(err?.data?.message || "Failed to resend OTP. Try again");
+      setIsResendDisabled(false);
     }
   };
 
@@ -96,8 +116,7 @@ const VerifyOTP = () => {
           <form onSubmit={handleVerifyOtp} className="flex flex-col space-y-4">
             <input
               type="text"
-              inputMode="numberic"
-              pattern="[0-9]"
+              inputMode="numeric"
               maxLength={6}
               value={otp}
               onChange={otpHandler}
@@ -107,13 +126,17 @@ const VerifyOTP = () => {
             <button
               type="submit"
               disabled={timeLeft <= 0}
-              className={`w-full py-2 rounded-lg text-base font-semibold transition-all ${timeLeft <= 0 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"}`}
+              className={`w-full py-2 rounded-lg text-base font-semibold transition-all ${timeLeft <= 0 ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700"} cursor-pointer `}
             >
               {isLoading ? "Verifying OTP..." : "Verify OTP"}
             </button>
           </form>
-          <button className="w-full mt-3 text-blue-600 font-medium hover:underline disabled:text-gray-400 cursor-pointer">
-            Resend
+          <button
+            onClick={handleResendOtp}
+            disabled={isResendDisabled || isResending}
+            className="w-full mt-3 text-blue-600 font-medium hover:underline disabled:text-gray-400 cursor-pointer"
+          >
+            {isResending ? "Resending OTP..." : "Resend OTP"}
           </button>
         </div>
         <div className="mt-3">

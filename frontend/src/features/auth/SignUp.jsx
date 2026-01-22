@@ -43,7 +43,6 @@ const Signup = () => {
   };
 
   //redirect the user to the login page
-
   useEffect(() => {
     if (userInfo) {
       navigate("/listing");

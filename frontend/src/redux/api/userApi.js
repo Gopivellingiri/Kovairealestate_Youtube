@@ -17,7 +17,26 @@ export const userApi = apiSlice.injectEndpoints({
         body: { email, otp },
       }),
     }),
+    resendOtp: builder.mutation({
+      query: ({ email }) => ({
+        url: `${USER_URL}/resend-otp`,
+        method: "POST",
+        body: { email },
+      }),
+    }),
+    loginUser: builder.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/login`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterUserMutation, useVerifyOtpMutation } = userApi;
+export const {
+  useRegisterUserMutation,
+  useVerifyOtpMutation,
+  useResendOtpMutation,
+  useLoginUserMutation,
+} = userApi;
