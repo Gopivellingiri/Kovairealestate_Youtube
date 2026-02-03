@@ -2,7 +2,7 @@ import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import User from "../model/user.js";
 import { sendToken } from "../utils/sendToken.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
-import sendMail from "../utils/sendMail.js";
+import { sendEmail } from "../utils/sendMail.js";
 
 // api/v1/users/register
 export const sendOTP = catchAsyncErrors(async (req, res, next) => {
@@ -23,11 +23,17 @@ export const sendOTP = catchAsyncErrors(async (req, res, next) => {
     otpExpires,
   });
 
-  await sendMail({
-    email,
-    subject: "Your OTP for Account Verification",
-    message: `Your OTP is ${otp}, It will expire in 10 minutes`,
+  await sendEmail({
+    from: "Kovai Real Esate < noreply@realestatekovai.online>",
+    to: email,
+    subject: "Your OTP for Account verification",
+    html: `<h2>Account Verification</h2>
+            <p>Your OTP is:</p>
+            <h1>${otp}</h1>
+            <p>This OTP will expire in 10 minutes.</p>
+    `,
   });
+
   res.status(200).json({
     success: true,
     message: `OTP sent to ${email}`,
@@ -80,9 +86,15 @@ export const resendOTP = catchAsyncErrors(async (req, res, next) => {
   await user.save();
 
   await sendMail({
-    email,
+    from: "Kovai Real Estate <noreply@realestatekovai.online>",
+    to: email,
     subject: "Your New OTP",
-    message: `Your new OTP is ${otp}. It will expire in 10 minutes`,
+    html: `<h2>Kovai Real Estate</h2>
+            <p>Your new OTP is:</p>
+            <h1>${otp}</h1>
+            <p>This OTP will expire in 10 minutes.</p>
+            <p>If you did not request this. Please ignore this email.</p>
+    `,
   });
   res.status(200).json({ success: true, message: "new OTP sent" });
 });

@@ -1,31 +1,22 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
 
-const sendMail = async (options) => {
+export const transporter = nodemailer.createTransport({
+  host: `smtp-relay.brevo.com`,
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.BREVO_SMTP_USER,
+    pass: process.env.BREVO_SMTP_PASS,
+  },
+});
+
+export const sendEmail = async ({ from, to, subject, html }) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
-      service: process.env.SMTP_SERVICE,
-      secure: false,
-      auth: {
-        user: process.env.SMTP_MAIL,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
-    const mailOptions = {
-      from: `kovai realEstate < ${process.env.SMTP_MAIL}`,
-      to: options.email,
-      subject: options.subject,
-      text: options.message,
-      html: options.html,
-    };
-
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
-  } catch (err) {
-    console.error("Error sending email:", err);
-    throw new Error("Error sending email");
+    await transporter.sendMail({ from, to, subject, html });
+  } catch (error) {
+    console.error("Email send failed", error);
+    throw error;
   }
 };
-
-export default sendMail;

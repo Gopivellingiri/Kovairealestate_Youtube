@@ -1,11 +1,12 @@
 import React from "react";
 import Header from "../../shared/Header";
+import Listing from "./Listing";
 
 const ListingPage = () => {
   return (
     <div>
       <Header />
-      ListingPage
+      <Listing />
     </div>
   );
 };

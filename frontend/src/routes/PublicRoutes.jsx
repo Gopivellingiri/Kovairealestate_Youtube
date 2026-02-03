@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "../features/Home/HomePage";
 import AboutUsPage from "../features/About/AboutUsPage";
 import ContactPage from "../features/Contact/ContactPage";
@@ -11,6 +11,7 @@ import VerifyOTP from "../features/auth/VerifyOTP";
 
 const PublicRoutes = (
   <Routes>
+    <Route path="/" element={<Navigate to="/listing" replace />} />
     <Route path="/home" element={<HomePage />} />
     <Route path="/about" element={<AboutUsPage />} />
     <Route path="/contact" element={<ContactPage />} />
