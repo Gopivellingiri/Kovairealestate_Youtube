@@ -10,7 +10,7 @@ export const getPropertyCards = catchAsyncErrors(async (req, res) => {
 
     plotArea floorNumber plotWidth yearOfBuilt possessionDate
 
-    sizeOfLand soiltype waterSource fencing
+    sizeOfLand soilType waterSource fencing plotLength
     `,
     )
     .lean();
@@ -55,7 +55,7 @@ export const getPropertyCards = catchAsyncErrors(async (req, res) => {
             plotArea: p.plotArea,
             floorNumber: p.floorNumber,
             parkingSpaces: p.parkingSpaces,
-            yearOfbuilt: p.yearOfbuilt,
+            yearOfBuilt: p.yearOfBuilt,
           };
         default:
           return {};
@@ -63,7 +63,6 @@ export const getPropertyCards = catchAsyncErrors(async (req, res) => {
     })(),
   }));
 
-  console.log("this properties", cards);
   res.status(200).json({
     success: true,
     count: cards.length,

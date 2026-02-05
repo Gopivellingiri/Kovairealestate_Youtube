@@ -96,7 +96,7 @@ const propertySchema = new mongoose.Schema(
     bathrooms: Number,
     buildUpArea: String,
     furnishing: String,
-    yearOfbuilt: Number,
+    yearOfBuilt: Number,
     parkingSpaces: {
       type: Number,
       min: 0,

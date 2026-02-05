@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ListingCard from "./ListingCard";
+import ListingCard from "../Listing/Listingcards/ListingCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import GoogleMapPage from "./GoogleMapPage";
@@ -86,14 +86,22 @@ const Listing = () => {
       {/* Listing section */}
       <div className="sectionContainer flex flex-col-reverse md:flex-row items-center md:items-start justify-center md:justify-between gap-4 pt-10 xl:gap-5 mb-5">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-2 md:grid-cols-2 md:gap-2 lg:grid-cols-3 xl:gap-5 max-h-175 md:overflow-y-auto md:w-1/2">
-          <ListingCard />
+          {properties?.length > 0 ? (
+            properties?.map((property) => (
+              <ListingCard key={property?._id} property={property} />
+            ))
+          ) : (
+            <div className="col-span-3 text-center text-lg text-sky-800 font-semibold">
+              <span>No properties found based on your search creterial</span>
+            </div>
+          )}
           <div className="sm:col-span-2 xl:col-span-3 flex justify-center md:mt-4">
             Pagination
           </div>
         </div>
         {/* map section */}
         <div className="block w-full h-125 sm:h-100 md:w-1/2 md:h-175">
-          <GoogleMapPage />
+          <GoogleMapPage property={properties} />
         </div>
       </div>
     </div>
