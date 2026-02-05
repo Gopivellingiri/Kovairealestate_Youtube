@@ -13,27 +13,25 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 const allowedOrigins = [
-  "https://realestatekovaiweb.netlify.app",
   "http://localhost:5173",
+  "https://realestatekovaiweb.netlify.app",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // allow server-to-server, Postman, curl
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
+      if (allowedOrigins.includes(origin) || origin.endsWith(".netlify.app")) {
         return callback(null, true);
       }
 
-      return callback(new Error("Not allowed by CORS"));
+      callback(null, false);
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
 // main route definition
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/properties", propertyRoutes);
