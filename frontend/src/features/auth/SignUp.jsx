@@ -7,7 +7,7 @@ import { useRegisterUserMutation } from "../../redux/api/userApi";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
 
-const Signup = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -128,4 +128,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;
