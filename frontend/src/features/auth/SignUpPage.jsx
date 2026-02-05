@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../shared/Header";
 import Signup from "./Signup";
 
-const SignupPage = () => {
+const SignUpPage = () => {
   return (
     <div>
       <Header />
@@ -11,4 +11,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default SignUpPage;
