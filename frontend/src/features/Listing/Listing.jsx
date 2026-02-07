@@ -2,7 +2,7 @@ import { useState } from "react";
 import ListingCard from "../Listing/Listingcards/ListingCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import GoogleMapPage from "./GoogleMapPage";
+import GoogleMapPage from "./GoogleMap/GoogleMapPage";
 import { Link } from "react-router-dom";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useGetAllPropertiesQuery } from "../../redux/api/propertyApi";
@@ -101,7 +101,7 @@ const Listing = () => {
         </div>
         {/* map section */}
         <div className="block w-full h-125 sm:h-100 md:w-1/2 md:h-175">
-          <GoogleMapPage property={properties} />
+          <GoogleMapPage properties={properties} />
         </div>
       </div>
     </div>

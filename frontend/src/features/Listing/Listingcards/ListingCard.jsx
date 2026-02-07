@@ -2,9 +2,8 @@ import { faIndianRupeeSign } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Link } from "react-router-dom";
-import dayjs from "dayjs";
+
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
 
 import ImageCard from "../Listingcards/ImageCard";
 import SpecsList from "../Listingcards/SpecsList";

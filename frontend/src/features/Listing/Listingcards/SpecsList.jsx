@@ -1,7 +1,11 @@
 import {
+  faArrowsLeftRightToLine,
+  faArrowsUpToLine,
   faBath,
   faBed,
   faBorderAll,
+  faBuilding,
+  faCalendarDays,
   faSquare,
   faSquareParking,
   faSunPlantWilt,
@@ -46,15 +50,27 @@ const SpecsList = ({ type, specs }) => {
     case "Residential Plot":
       return (
         <div className="flex flex-wrap text-base">
-          <Spec icon={faBorderAll} value={`${specs?.sizeOfLand}`} />
-          <Spec icon={faSunPlantWilt} value={`${specs?.soilType}`} />
+          <Spec icon={faArrowsLeftRightToLine} value={`${specs?.plotWidth}`} />
+          <Spec icon={faArrowsUpToLine} value={`${specs?.plotLength}`} />
+          <Spec icon={faSquare} value={`${specs?.plotArea} `} />
           <Spec
-            icon={GiWoodenFence}
-            value={`${specs?.fencing ? "Fencing" : "No Fencing"} `}
+            icon={faCalendarDays}
+            value={dayjs(specs?.possessionDate).format("YYYY-MM-DD")}
+          />
+        </div>
+      );
+    case "Commercial":
+      return (
+        <div className="flex flex-wrap text-base">
+          <Spec icon={faSquare} value={`${specs?.plotArea}`} />
+          <Spec icon={GiElevator} value={`${specs?.floorNumber} Floor`} />
+          <Spec
+            icon={faSquareParking}
+            value={`${specs?.parkingSpaces} parking `}
           />
           <Spec
-            icon={faWater}
-            value={`${specs?.waterSource ? "Water Source" : "No Water Source"} `}
+            icon={faBuilding}
+            value={dayjs(specs?.yearOfBuilt).format("YYYY-MM-DD")}
           />
         </div>
       );
