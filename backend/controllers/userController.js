@@ -3,6 +3,7 @@ import User from "../model/user.js";
 import { sendToken } from "../utils/sendToken.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import { sendEmail } from "../utils/sendMail.js";
+import admin from "../firebaseAdmin/firebaseAdmin.js";
 
 // api/v1/users/register
 export const sendOTP = catchAsyncErrors(async (req, res, next) => {
@@ -119,4 +120,36 @@ export const loginUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid credentials", 400));
   }
   sendToken(user, 200, res, "Welcome back!");
+});
+
+//api/v1/user/google-login
+export const googleAuth = catchAsyncErrors(async (req, res, next) => {
+  const { token } = req.body;
+  if (!token) {
+    return next(new ErrorHandler("No token provided", 400));
+  }
+  const decodedToken = await admin.auth().verifyIdToken(token);
+  const { uid, email, name, picture } = decodedToken;
+  let user = await User.findOne({ email });
+  let isNewUser = false;
+  if (!user) {
+    isNewUser = true;
+
+    user = new User({
+      name,
+      email,
+      googleId: uid,
+      avatar: { url: picture, public_id: null },
+      role: "buyer",
+      isVerified: true,
+    });
+    await user.save();
+  }
+  sendToken(
+    user,
+    200,
+    res,
+    isNewUser ? "Account created via Google" : "Login successful",
+    { isNewUser },
+  );
 });

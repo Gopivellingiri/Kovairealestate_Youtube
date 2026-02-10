@@ -3,9 +3,22 @@ import HeroImg from "../../assets/heroimg.png";
 import Layout from "../../shared/Layout";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useRegisterUserMutation } from "../../redux/api/userApi";
+import {
+  useGoogleLoginMutation,
+  useRegisterUserMutation,
+} from "../../redux/api/userApi";
 import { setCredentials } from "../../redux/slices/authSlice";
 import { toast } from "react-toastify";
+import {
+  auth,
+  googleProvider,
+  logGooglesignInEvent,
+  signInWithPopup,
+} from "../../firebase/firebase";
+import { getIdToken } from "firebase/auth";
+import Loader from "../../shared/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -39,6 +52,32 @@ const SignUp = () => {
       }
     } catch (err) {
       toast.error(err?.data?.message || "Registration failed");
+    }
+  };
+
+  /* ----------------------------- //GOOGLE LOGIN ----------------------------- */
+
+  const [googleLogin, { isLoading: isGoogleLoading }] =
+    useGoogleLoginMutation();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+
+      const token = await user.getIdToken();
+      const res = await googleLogin({ token }).unwrap();
+      if (res.isNewUser) {
+        toast.success(`Welcome, ${res.user.name}!`);
+      } else {
+        toast.success(`Welcome back, ${res.user.name}!`);
+      }
+      dispatch(setCredentials({ user: res.user, token: res.token }));
+      navigate("/listing");
+      logGooglesignInEvent;
+    } catch (err) {
+      console.error("Google Sign-In Error:", err);
+      toast.error(err?.data?.message || "Google login failed!");
     }
   };
 
@@ -89,7 +128,7 @@ const SignUp = () => {
               <div className="w-full">
                 <button
                   type="submit"
-                  className="font-semibold text-md text-white rounded-full space-y-0 bg-orange-500 py-3 px-6 hover:bg-orange-600 transition-all duration-300 w-full mt-3"
+                  className="font-semibold text-md text-white rounded-full space-y-0 bg-orange-500 py-3 px-6 hover:bg-orange-600 transition-all duration-300 w-full mt-3 cursor-pointer"
                 >
                   {isLoading ? "Sing Up..." : "Sign Up"}
                 </button>
@@ -103,8 +142,24 @@ const SignUp = () => {
                   <hr className="border border-gray-200 w-1/2" />
                 </div>
                 <div className="w-full mt-3">
-                  <button className="flex items-center justify-center gap-2 py-3 px-6 bg-gray-800 rounded-full text-center text-white w-full font-semibold hover:bg-gray-900 transition-colors duration-300">
-                    Continue with Google
+                  <button
+                    onClick={handleGoogleSignIn}
+                    disabled={isGoogleLoading}
+                    className="flex items-center justify-center gap-2 py-3 px-6 bg-gray-800 rounded-full text-center text-white w-full font-semibold hover:bg-gray-900 transition-colors duration-300 cursor-pointer"
+                  >
+                    {isGoogleLoading ? (
+                      <div className="mr-2">
+                        <Loader size={20} color="#ffffff" />
+                      </div>
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faGoogle}
+                        className="text-white mr-2"
+                      />
+                    )}
+                    {isGoogleLoading
+                      ? "Loading wait..."
+                      : "Continue with Google"}
                   </button>
                 </div>
                 <p className="text-base font-semibold text-sky-800 mt-3 text-center">

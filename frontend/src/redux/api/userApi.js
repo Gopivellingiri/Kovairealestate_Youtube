@@ -31,6 +31,13 @@ export const userApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    googleLogin: builder.mutation({
+      query: ({ token }) => ({
+        url: `${USER_URL}/google-login`,
+        method: "POST",
+        body: { token },
+      }),
+    }),
   }),
 });
 
@@ -39,4 +46,5 @@ export const {
   useVerifyOtpMutation,
   useResendOtpMutation,
   useLoginUserMutation,
+  useGoogleLoginMutation,
 } = userApi;
