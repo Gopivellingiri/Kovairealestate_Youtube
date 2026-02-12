@@ -15,7 +15,6 @@ import {
   logGooglesignInEvent,
   signInWithPopup,
 } from "../../firebase/firebase";
-import { getIdToken } from "firebase/auth";
 import Loader from "../../shared/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
