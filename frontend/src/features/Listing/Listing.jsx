@@ -1,10 +1,6 @@
 import { useMemo, useState } from "react";
-import ListingCard from "../Listing/Listingcards/ListingCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import GoogleMapPage from "./GoogleMap/GoogleMapPage";
-import { Link } from "react-router-dom";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useGetAllPropertiesQuery } from "../../redux/api/propertyApi";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilters, setSearchFilters } from "../../redux/slices/searchSlice";
